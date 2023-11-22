@@ -1,0 +1,22 @@
+﻿@model IEnumerable<AskForAnswer.Models.Question>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Forum</h1>
+
+
+
+@foreach (var item in Model) {
+        
+	<h2> @item.Title</h2>
+
+	<p> @item.Description </p>
+
+	<p> Posted By: @(item.User != null ? item.User.UserName : "Unknown") | Total Answers: @(item.Answers != null ? item.Answers.Count.ToString() : "0")</p>
+               
+	<a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+               
+}
+
