@@ -2,49 +2,55 @@
 @inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="container mt-3">
+	<h1 class="text-center mb-4">Details</h1>
 
-<h3>@Model.Title</h3>
-<p>@Model.Description</p>
-<p>By: @(Model.User != null ? Model.User.UserName : "Unknown User")</p>
+	<div class="card mb-3">
+		<div class="card-body">
+			<h3 class="card-title">@Model.Title</h3>
+			<p class="card-text">@Model.Description</p>
+			<p class="card-text">By: <strong>@(Model.User != null ? Model.User.UserName : "Unknown User")</strong></p>
+		</div>
+	</div>
 
-<h4>All Answers:</h4>
-@if (Model.Answers != null && Model.Answers.Any())
-{
-    foreach (var answer in Model.Answers)
-    {
-        <p>@answer.Content - @(answer.User != null ? answer.User.UserName : "Anonymous")</p>
-        <hr />
-    }
-}
-else
-{
-    <p>No answers yet.</p>
-}
+	<div class="answers-section">
+		<h4>All Answers:</h4>
+		@if (Model.Answers != null && Model.Answers.Any())
+		{
+			foreach (var answer in Model.Answers)
+			{
+				<div class="card mb-2">
+					<div class="card-body">
+						<p class="card-text">@answer.Content</p>
+						<p class="card-text">- <strong>@(answer.User != null ? answer.User.UserName : "Anonymous")</strong></p>
+					</div>
+				</div>
+			}
+		}
+		else
+		{
+			<p>No answers yet.</p>
+		}
+	</div>
 
-<br />
-<br />
+	<div class="answer-form mt-4">
+		<h4>Add Answers</h4>
+		<form asp-action="AddAnswer" method="post">
+			<div class="form-group">
+				<textarea name="Content" class="form-control" placeholder="Your answer..."></textarea>
+			</div>
+            
+			<input type="hidden" name="IdentityUserId" value="@UserManager.GetUserId(User)"/>
+			<input type="hidden" name="QuestionId" value="@Model.Id"/>
+            
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary" value="Submit"/>
+			</div>
+		</form>
+	</div>
 
-<h4>Add Answers</h4>
-<form asp-action="AddAnswer" method="post">
-    <div class="form-group">
-        <textarea name="Content" class="form-control"></textarea>
-    </div>
-    
-    <div class="form-group">
-        <input type="hidden" name="IdentityUserId" value="@UserManager.GetUserId(User)"/>
-    </div>
-    
-    <div class="form-group">
-        <input type="hidden" name="QuestionId" value="@Model.Id"/>
-    </div>
-    
-    <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Submit"/>
-    </div>
-</form>
-
-<a asp-action="Index">Back to List</a>
+	<a asp-action="Index" class="btn btn-link mt-4">Back to List</a>
+</div>

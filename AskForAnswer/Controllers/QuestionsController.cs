@@ -25,12 +25,17 @@ namespace AskForAnswer.Controllers
         }
 
         // GET: Questions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
+
+
             var applicationDbContext = _context.Questions
                                                                                     .Include(q => q.User)
                                                                                     .Include(c=> c.Answers);
-            return View(await applicationDbContext.ToListAsync());
+
+            int pageSize = 3;
+
+			return View(await PaginatedList<Question>.CreateAsync(applicationDbContext, pageNumber ?? 1, pageSize));
         }
 
 		// GET: Questions/Details/5
