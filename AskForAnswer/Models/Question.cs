@@ -1,21 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Build.Framework;
 
 namespace AskForAnswer.Models
 {
-    public class Question
-    {
-        public int  Id { get; set; }
-        public String? Title { get; set; }
-        public String? Description { get; set; }
+	public class Question
+	{
+		public int Id { get; set; }
+		public string Title { get; set; }
+		public string Description { get; set; }
+		//Relations
+		[Required]
+		public string? IdentityUserId { get; set; }
+		[ForeignKey("IdentityUserId")]
+		[Required]
+		public IdentityUser? User { get; set; }
 
-        // Relations
-        public String? IdentityUserId { get; set; }
-
-        [ForeignKey("IdentityUserId")]
-        public IdentityUser? User { get; set; }
-
-        public List<Answer>? Answers { get; set; }
-
-    }
+		public List<Answer>? Answers { get; set; }
+	}
 }
